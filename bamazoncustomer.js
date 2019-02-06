@@ -4,15 +4,15 @@ var prompt = require('prompt');
 var con = mysql.createConnection({
 	host	: 'localhost',
 	user	: 'root',
-	password: '',
-	database: 'Bamazon'
+	password: 'ilpp0210',
+	database: 'bamazon'
 });
 
 con.connect(function (err) {
 	if(err){
 		console.log (err);
 	}
-	console.log('Your are connected');
+	console.log('You are connected');
 });
 
 var menu = function(){
