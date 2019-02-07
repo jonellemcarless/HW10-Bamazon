@@ -1,46 +1,45 @@
-var mysql = require('mysql');
+var mysql = require("mysql");
 var inquirer = require('inquirer');
 
-var connection = mysql.createConnection({
-	host	: 'localhost',
-	port: 3306,
-	user	: 'root',
-	password: 'ilpp0210',
-	database: 'bamazon'
+var con = mysql.createConnection({
+	host	: "localhost",
+	user	: "root",
+	password: "",
+	database: "bamazon"
 });
 
-connection.connect(function (err) {
+con.connect(function (err) {
 	if(err){
 		console.log (err);
 	}
-	console.log('You are connected');
+	console.log("You are connected");
 });
 
 var menu = function(){
 
-	connection.query("select * from products", function(err, products){
+	con.query("select * from products", function(err, products){
 	if (err) {
 		return err;
 	};
 
 	for (var i = 0; i < products.length; i++) {
-		console.log('Product ID: ' + products[i].ProductID + ', Product Name: ' + products[i].DepartmentName + ' ' + products[i].ProductName + ', Price: $' + products[i].Price);
+		console.log('Product ID: ' + products[i].itemid + ', Product Name: ' + products[i].departmentname + ' ' + products[i].productname + ', Price: $' + products[i].price);
 	console.log('------------------------------------------------------');
 	};
 
-	prompt.get(['ProductID', 'Quantity', 'Add_More'], function (err, result) {
+	inquirer.prompt(['ProductID', 'Quantity', 'Add_More'], function (err, result) {
 
-    console.log('  ProductID: ' + result.ProductID);
+    console.log('  ProductID: ' + result.itemid);
     console.log('  Quantity: ' + result.Quantity);
 
     for (var i = 0; i < products.length; i++) {
-    	if (result.ProductID == products[i].ProductID) {
-	    	if (products[i].StockQuantity < result.Quantity) {
+    	if (result.ProductID == products[i].itemid) {
+	    	if (products[i].stock < result.Quantity) {
 	    		console.log('Sorry, not enough stock');
 	    	}
 
-	    var orderToatal = (result.Quantity * products[i].Price);
-	    var newStockQuantity = (products[i].StockQuantity - result.Quantity);
+	    var orderToatal = (result.Quantity * products[i].price);
+	    var newStockQuantity = (products[i].stock - result.Quantity);
 
 	    	if (products[i].StockQuantity >= result.Quantity) {
 	    		console.log('Order total: ' + orderToatal)
@@ -50,7 +49,7 @@ var menu = function(){
 	    
     }; //for
 
-    connection.query("UPDATE products SET StockQuantity =" + newStockQuantity + " WHERE ProductID = " + result.ProductID + ";", function(err, products){
+    con.query("UPDATE products SET StockQuantity =" + newStockQuantity + " WHERE ProductID = " + result.itemid + ";", function(err, products){
 			if (err) {
 			return console.log(err);
 		}
@@ -64,7 +63,7 @@ var menu = function(){
 
 
 
-  }); //prompt
+  });
 
 }); //query
 }//function
