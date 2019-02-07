@@ -1,14 +1,15 @@
 var mysql = require('mysql');
-var prompt = require('prompt');
+var inquirer = require('inquirer');
 
-var con = mysql.createConnection({
+var connection = mysql.createConnection({
 	host	: 'localhost',
+	port: 3306,
 	user	: 'root',
 	password: 'ilpp0210',
 	database: 'bamazon'
 });
 
-con.connect(function (err) {
+connection.connect(function (err) {
 	if(err){
 		console.log (err);
 	}
@@ -17,7 +18,7 @@ con.connect(function (err) {
 
 var menu = function(){
 
-	con.query("select * from products", function(err, products){
+	connection.query("select * from products", function(err, products){
 	if (err) {
 		return err;
 	};
@@ -49,7 +50,7 @@ var menu = function(){
 	    
     }; //for
 
-    con.query("UPDATE products SET StockQuantity =" + newStockQuantity + " WHERE ProductID = " + result.ProductID + ";", function(err, products){
+    connection.query("UPDATE products SET StockQuantity =" + newStockQuantity + " WHERE ProductID = " + result.ProductID + ";", function(err, products){
 			if (err) {
 			return console.log(err);
 		}
