@@ -63,7 +63,7 @@ mysql.createConnection({
 			console.log("PRODID: ", response[0])
 			console.log("TOTAL: ", response[1])
 
-			return mysql.createConnection({
+			mysql.createConnection({
 				host: "localhost",
 				user: "root",
 				password: "",
@@ -83,8 +83,6 @@ mysql.createConnection({
 						};
 					}
 			})
-		}).then(function (response) {
-			console.log(response)
 		})
 })
 
